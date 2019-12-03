@@ -89,12 +89,13 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
     "bindValue(2, $price, PDO::PARAM_INT);",
     "bindValue(3, $stock, PDO::PARAM_INT);",
     "bindValue(4, $filename, PDO::PARAM_STR);",
-    "bindValue(5, $status, PDO::PARAM_STR);",
+    "bindValue(5, $status_value, PDO::PARAM_INT);",
   ];
   return execute_query($db, $sql, $binds);
 }
 
 function update_item_status($db, $item_id, $status){
+  $status_value = PERMITTED_ITEM_STATUSES[$status];
   $sql = "
     UPDATE
       items
@@ -104,7 +105,7 @@ function update_item_status($db, $item_id, $status){
       item_id = ?
   ";
   $binds = [
-    "bindValue(1, $status, PDO::PARAM_STR)",
+    "bindValue(1, $status_value, PDO::PARAM_INT)",
     "bindValue(2, $item_id, PDO::PARAM_INT);",
   ];
   return execute_query($db, $sql, $binds);
