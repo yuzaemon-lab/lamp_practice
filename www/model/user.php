@@ -13,7 +13,6 @@ function get_user($db, $user_id){
       users
     WHERE
       user_id = {$user_id}
-    LIMIT 1
   ";
 
   return fetch_query($db, $sql);
@@ -30,7 +29,6 @@ function get_user_by_name($db, $name){
       users
     WHERE
       name = '{$name}'
-    LIMIT 1
   ";
 
   return fetch_query($db, $sql);
@@ -104,9 +102,12 @@ function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
       users(name, password)
-    VALUES ('{$name}', '{$password}');
+    VALUES (?, ?);
   ";
-
-  return execute_query($db, $sql);
+  $binds = [
+    "bindValue(1, $name, PDO::PARAM_STR)",
+    "bindValue(2, $password, PDO::PARAM_INT);",
+  ];
+  return execute_query($db, $sql, $binds);
 }
 

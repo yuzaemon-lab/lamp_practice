@@ -35,7 +35,7 @@ function get_items($db, $is_open = false){
       items
   ';
   if($is_open === true){
-    $sql .= '
+    $sql = '
       WHERE status = 1
     ';
   }
@@ -82,10 +82,16 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
         image,
         status
       )
-    VALUES('{$name}', {$price}, {$stock}, '{$filename}', {$status_value});
+    VALUES(?, ?, ?, ?, ?);
   ";
-
-  return execute_query($db, $sql);
+  $binds = [
+    "bindValue(1, $name, PDO::PARAM_STR)",
+    "bindValue(2, $price, PDO::PARAM_INT);",
+    "bindValue(3, $stock, PDO::PARAM_INT);",
+    "bindValue(4, $filename, PDO::PARAM_STR);",
+    "bindValue(5, $status, PDO::PARAM_STR);",
+  ];
+  return execute_query($db, $sql, $binds);
 }
 
 function update_item_status($db, $item_id, $status){
@@ -93,13 +99,15 @@ function update_item_status($db, $item_id, $status){
     UPDATE
       items
     SET
-      status = {$status}
+      status = ?
     WHERE
-      item_id = {$item_id}
-    LIMIT 1
+      item_id = ?
   ";
-  
-  return execute_query($db, $sql);
+  $binds = [
+    "bindValue(1, $status, PDO::PARAM_STR)",
+    "bindValue(2, $item_id, PDO::PARAM_INT);",
+  ];
+  return execute_query($db, $sql, $binds);
 }
 
 function update_item_stock($db, $item_id, $stock){
@@ -107,13 +115,15 @@ function update_item_stock($db, $item_id, $stock){
     UPDATE
       items
     SET
-      stock = {$stock}
+      stock = ?
     WHERE
-      item_id = {$item_id}
-    LIMIT 1
+      item_id = ?
   ";
-  
-  return execute_query($db, $sql);
+  $binds = [
+    "bindValue(1, $stock, PDO::PARAM_INT)",
+    "bindValue(2, $item_id, PDO::PARAM_INT);",
+  ];
+  return execute_query($db, $sql, $binds);
 }
 
 function destroy_item($db, $item_id){
@@ -136,11 +146,12 @@ function delete_item($db, $item_id){
     DELETE FROM
       items
     WHERE
-      item_id = {$item_id}
-    LIMIT 1
+      item_id = ?
   ";
-  
-  return execute_query($db, $sql);
+  $binds = [
+    "bindValue(1, $item_id, PDO::PARAM_INT);",
+  ];
+  return execute_query($db, $sql, $binds);
 }
 
 

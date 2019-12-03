@@ -15,6 +15,7 @@ $db = get_db_connect();
 $user = get_login_user($db);
 
 $carts = get_user_carts($db, $user['user_id']);
+$carts = entity_assoc_array($carts);
 
 $total_price = sum_carts($carts);
 

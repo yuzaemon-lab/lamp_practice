@@ -38,9 +38,14 @@ function fetch_all_query($db, $sql, $params = array()){
   return false;
 }
 
-function execute_query($db, $sql, $params = array()){
+function execute_query($db, $sql, $binds = array(), $params = array()){
   try{
     $statement = $db->prepare($sql);
+    foreach ($binds as $bind) {
+      if (isset($bind)) {
+        $statement->$bind;
+      }
+    }
     return $statement->execute($params);
   }catch(PDOException $e){
     set_error('更新に失敗しました。');
