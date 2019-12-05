@@ -105,8 +105,8 @@ function insert_user($db, $name, $password){
     VALUES (?, ?);
   ";
   $binds = [
-    "bindValue(1, $name, PDO::PARAM_STR)",
-    "bindValue(2, $password, PDO::PARAM_INT);",
+    [$name, 'str'],
+    [$password, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }

@@ -24,7 +24,7 @@ function fetch_query($db, $sql, $params = array()){
   }catch(PDOException $e){
     set_error('データ取得に失敗しました。');
   }
-  return false;
+  // return false;
 }
 
 function fetch_all_query($db, $sql, $params = array()){
@@ -35,15 +35,21 @@ function fetch_all_query($db, $sql, $params = array()){
   }catch(PDOException $e){
     set_error('データ取得に失敗しました。');
   }
-  return false;
+  // return false;
 }
 
 function execute_query($db, $sql, $binds = array()){
   try{
     $statement = $db->prepare($sql);
     if (isset($binds)) {
-      foreach ($binds as $bind) {
-        echo $statement->$bind;
+      $i=1;
+      foreach($binds as $val){
+        if($val[1]==='int'){
+          $statement->bindValue($i,$val[0],PDO::PARAM_INT);
+        }else if ($val[1]==='str'){
+          $statement->bindValue($i,$val[0],PDO::PARAM_STR);
+        }
+        $i++;
       }
     }
     return $statement->execute();
@@ -51,5 +57,5 @@ function execute_query($db, $sql, $binds = array()){
     set_error('更新に失敗しました。');
     throw $e;
   }
-  return false;
+  // return false;
 }

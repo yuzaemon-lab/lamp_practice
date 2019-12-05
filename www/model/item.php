@@ -39,7 +39,6 @@ function get_items($db, $is_open = false){
       WHERE status = 1
     ';
   }
-
   return fetch_all_query($db, $sql);
 }
 
@@ -85,11 +84,11 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
     VALUES(?, ?, ?, ?, ?);
   ";
   $binds = [
-    "bindValue(1, $name, PDO::PARAM_STR)",
-    "bindValue(2, $price, PDO::PARAM_INT);",
-    "bindValue(3, $stock, PDO::PARAM_INT);",
-    "bindValue(4, $filename, PDO::PARAM_STR);",
-    "bindValue(5, $status_value, PDO::PARAM_INT);",
+    [$name, 'str'],
+    [$price, 'int'],
+    [$stock, 'int'],
+    [$filename, 'str'],
+    [$status_value, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }
@@ -105,8 +104,8 @@ function update_item_status($db, $item_id, $status){
       item_id = ?
   ";
   $binds = [
-    "bindValue(1, $status_value, PDO::PARAM_INT)",
-    "bindValue(2, $item_id, PDO::PARAM_INT);",
+    [$status_value, 'int'],
+    [$item_id, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }
@@ -121,8 +120,8 @@ function update_item_stock($db, $item_id, $stock){
       item_id = ?
   ";
   $binds = [
-    "bindValue(1, $stock, PDO::PARAM_INT)",
-    "bindValue(2, $item_id, PDO::PARAM_INT);",
+    [$stock, 'int'],
+    [$item_id, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }
@@ -150,7 +149,7 @@ function delete_item($db, $item_id){
       item_id = ?
   ";
   $binds = [
-    "bindValue(1, $item_id, PDO::PARAM_INT);",
+    [$item_id, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }

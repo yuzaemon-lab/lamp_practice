@@ -73,9 +73,9 @@ function insert_cart($db, $item_id, $user_id, $amount = 1){
     VALUES(?, ?, ?)
   ";
   $binds = [
-    "bindValue(1, $item_id, PDO::PARAM_INT)",
-    "bindValue(2, $user_id, PDO::PARAM_INT);",
-    "bindValue(3, $amount, PDO::PARAM_INT);",
+    [$item_id, 'int'],
+    [$user_id, 'int'],
+    [$amount, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }
@@ -90,8 +90,8 @@ function update_cart_amount($db, $cart_id, $amount){
       cart_id = ?
   ";
   $binds = [
-    "bindValue(1, $amount, PDO::PARAM_INT)",
-    "bindValue(2, $cart_id, PDO::PARAM_INT);",
+    [$amount, 'int'],
+    [$cart_id, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }
@@ -104,7 +104,7 @@ function delete_cart($db, $cart_id){
       cart_id = ?
   ";
   $binds = [
-    "bindValue(1, $cart_id, PDO::PARAM_INT)",
+    [$cart_id, 'int'],
   ];
   return execute_query($db, $sql, $binds);
 }
@@ -134,7 +134,7 @@ function delete_user_carts($db, $user_id){
       user_id = ?
   ";
   $binds = [
-    "bindValue(1, $user_id, PDO::PARAM_INT)",
+    [$user_id, 'int'],
   ];
   execute_query($db, $sql, $binds);
 }

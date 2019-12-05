@@ -37,8 +37,8 @@ define('USER_TYPE_NORMAL', 2);
 define('ITEM_NAME_LENGTH_MIN', 1);
 define('ITEM_NAME_LENGTH_MAX', 100);
 
-define('ITEM_STATUS_OPEN', 1);
-define('ITEM_STATUS_CLOSE', 0);
+define('ITEM_STATUS_OPEN', 'open');
+define('ITEM_STATUS_CLOSE', 'close');
 
 define('PERMITTED_ITEM_STATUSES', array(
   'open' => 1,
