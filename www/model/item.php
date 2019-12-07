@@ -35,7 +35,7 @@ function get_items($db, $is_open = false){
       items
   ';
   if($is_open === true){
-    $sql = '
+    $sql .= '
       WHERE status = 1
     ';
   }
@@ -158,7 +158,7 @@ function delete_item($db, $item_id){
 // 非DB
 
 function is_open($item){
-  return $item['status'] === 1;
+  return $item['status'] === "1";
 }
 
 function validate_item($name, $price, $stock, $filename, $status){
