@@ -55,7 +55,6 @@ function execute_query($db, $sql, $binds = array()){
     return $statement->execute();
   }catch(PDOException $e){
     set_error('更新に失敗しました。');
-    throw $e;
   }
-  // return false;
+  return false;
 }
