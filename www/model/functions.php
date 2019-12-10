@@ -6,7 +6,7 @@
 * @return str 変換後文字
 */
 function entity_str($str) {
-  return htmlspecialchars($str, ENT_QUOTES);
+  return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
 /**
