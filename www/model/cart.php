@@ -21,9 +21,15 @@ function get_user_carts($db, $user_id){
     ON
       carts.item_id = items.item_id
     WHERE
-      carts.user_id = {$user_id}
+      carts.user_id = :user_id
   ";
-  return fetch_all_query($db, $sql);
+
+  $params = array(
+    ':user_id' => $user_id
+  );
+
+  return fetch_all_query($db, $sql, $params);
+
 }
 
 function get_user_cart($db, $user_id, $item_id){
@@ -45,12 +51,17 @@ function get_user_cart($db, $user_id, $item_id){
     ON
       carts.item_id = items.item_id
     WHERE
-      carts.user_id = {$user_id}
+      carts.user_id = :user_id
     AND
-      items.item_id = {$item_id}
+      items.item_id = :item_id
   ";
 
-  return fetch_query($db, $sql);
+  $params = array(
+    ':user_id' => $user_id,
+    ':item_id' => $item_id
+  );
+
+  return fetch_query($db, $sql, $params);
 
 }
 
@@ -70,14 +81,17 @@ function insert_cart($db, $item_id, $user_id, $amount = 1){
         user_id,
         amount
       )
-    VALUES(?, ?, ?)
+    VALUES(:item_id, :user_id, :amount)
   ";
-  $binds = [
-    [$item_id, 'int'],
-    [$user_id, 'int'],
-    [$amount, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+  
+  $params = array(
+    ':item_id' => $item_id,
+    ':user_id' => $user_id,
+    ':amount' => $amount
+  );
+
+  return execute_query($db, $sql, $params);
+
 }
 
 function update_cart_amount($db, $cart_id, $amount){
@@ -85,15 +99,18 @@ function update_cart_amount($db, $cart_id, $amount){
     UPDATE
       carts
     SET
-      amount = ?
+      amount = :amount
     WHERE
-      cart_id = ?
+      cart_id = :cart_id
   ";
-  $binds = [
-    [$amount, 'int'],
-    [$cart_id, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+
+  $params = array(
+    ':amount' => $amount,
+    ':cart_id' => $cart_id
+  );
+
+  return execute_query($db, $sql, $params);
+
 }
 
 function delete_cart($db, $cart_id){
@@ -101,12 +118,15 @@ function delete_cart($db, $cart_id){
     DELETE FROM
       carts
     WHERE
-      cart_id = ?
+      cart_id = :cart_id
   ";
-  $binds = [
-    [$cart_id, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+  
+  $params = array(
+    ':cart_id' => $cart_id
+  );
+
+  return execute_query($db, $sql, $params);
+
 }
 
 function purchase_carts($db, $carts){
@@ -131,12 +151,15 @@ function delete_user_carts($db, $user_id){
     DELETE FROM
       carts
     WHERE
-      user_id = ?
+      user_id = :user_id
   ";
-  $binds = [
-    [$user_id, 'int'],
-  ];
-  execute_query($db, $sql, $binds);
+  
+  $params = array(
+    ':user_id' => $user_id
+  );
+  
+  return execute_query($db, $sql, $params);
+
 }
 
 
@@ -166,4 +189,3 @@ function validate_cart_purchase($carts){
   }
   return true;
 }
-
