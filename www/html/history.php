@@ -17,5 +17,6 @@ $db = get_db_connect();
 $user = get_login_user($db);
 
 $histories = get_histories($db, $user['user_id']);
+$histories = entity_assoc_array($histories);
 
 include_once '../view/history_view.php';

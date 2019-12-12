@@ -32,5 +32,6 @@ if($history === false){
 }
 
 $history_details = get_history_details($db, $history_id);
+$history_details = entity_assoc_array($history_details);
 
 include_once '../view/history_detail_view.php';
