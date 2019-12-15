@@ -28,7 +28,7 @@ CREATE TABLE `purchase_details` (
     `history_id` INT(11) NOT NULL,
     `item_id` INT(11) NOT NULL,
     `amount` INT(11) NOT NULL,
-    -- `purchase_price` INT(11) NOT NULL,
+    `purchased_price` INT(11) NOT NULL,
     `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`purchase_id`)

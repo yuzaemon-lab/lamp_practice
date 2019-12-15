@@ -29,7 +29,6 @@ function get_user_carts($db, $user_id){
   );
 
   return fetch_all_query($db, $sql, $params);
-
 }
 
 function get_user_cart($db, $user_id, $item_id){
@@ -62,7 +61,6 @@ function get_user_cart($db, $user_id, $item_id){
   );
 
   return fetch_query($db, $sql, $params);
-
 }
 
 function add_cart($db, $item_id, $user_id) {
@@ -91,7 +89,6 @@ function insert_cart($db, $item_id, $user_id, $amount = 1){
   );
 
   return execute_query($db, $sql, $params);
-
 }
 
 function update_cart_amount($db, $cart_id, $amount){
@@ -110,7 +107,6 @@ function update_cart_amount($db, $cart_id, $amount){
   );
 
   return execute_query($db, $sql, $params);
-
 }
 
 function delete_cart($db, $cart_id){
@@ -126,24 +122,92 @@ function delete_cart($db, $cart_id){
   );
 
   return execute_query($db, $sql, $params);
-
 }
 
 function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
+  $db->beginTransaction();
+  if(insert_purchase_histories($db, $carts[0]['user_id']) === false){
+    set_error('購入に失敗しました。');
+    $db->rollback();
+    return false;
+  }
+
+  $history_id = $db->lastInsertId();
   foreach($carts as $cart){
-    if(update_item_stock(
-        $db, 
-        $cart['item_id'], 
-        $cart['stock'] - $cart['amount']
+    if(insert_purchase_details(
+      $db,
+      $history_id, 
+      $cart['item_id'], 
+      $cart['amount'], 
+      $cart['purchased_price']
       ) === false){
       set_error($cart['name'] . 'の購入に失敗しました。');
+      $db->rollback();
+      return false;
+    }
+    if(update_item_stock(
+      $db, 
+      $cart['item_id'], 
+      $cart['stock'] - $cart['amount']
+      ) === false){
+      set_error($cart['name'] . 'の購入に失敗しました。');
+      $db->rollback();
+      return false;
     }
   }
   
-  delete_user_carts($db, $carts[0]['user_id']);
+  if(delete_user_carts($db, $carts[0]['user_id']) === false) {
+    set_error('購入に失敗しました。');
+    $db->rollback();
+    return false;
+  }
+
+  $db->commit();
+  return true;
+}
+
+function insert_purchase_histories($db, $user_id){
+  $sql = "
+    INSERT INTO
+      purchase_histories(
+        user_id
+      )
+    VALUES(:user_id)
+  ";
+  $params = array(
+    ':user_id' => $user_id
+  );
+  
+  return execute_query($db, $sql, $params);
+}
+
+function insert_purchase_details($db, $history_id, $item_id, $amount, $purchased_price){
+  $sql = "
+    INSERT INTO
+      purchase_details(
+        history_id,
+        item_id,
+        amount,
+        purchased_price
+      )
+    VALUES(
+      :history_id,
+      :item_id,
+      :amount,
+      :purchased_price
+    )
+  ";
+  $params = array(
+    ':history_id' => $history_id,
+    ':item_id' => $item_id,
+    ':amount' => $amount,
+    ':purchased_price' => $purchased_price
+  );
+
+  return execute_query($db, $sql, $params);
 }
 
 function delete_user_carts($db, $user_id){
@@ -159,7 +223,6 @@ function delete_user_carts($db, $user_id){
   );
   
   return execute_query($db, $sql, $params);
-
 }
 
 

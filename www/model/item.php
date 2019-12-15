@@ -24,7 +24,6 @@ function get_item($db, $item_id){
   );
 
   return fetch_query($db, $sql, $params);
-
 }
 
 function get_items($db, $is_open = false){
@@ -44,6 +43,7 @@ function get_items($db, $is_open = false){
       WHERE status = 1
     ';
   }
+
   return fetch_all_query($db, $sql);
 }
 
@@ -98,7 +98,6 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
   );
 
   return execute_query($db, $sql, $params);
-
 }
 
 function update_item_status($db, $item_id, $status){
@@ -118,7 +117,6 @@ function update_item_status($db, $item_id, $status){
   );
 
   return execute_query($db, $sql, $params);
-
 }
 
 function update_item_stock($db, $item_id, $stock){
@@ -137,7 +135,6 @@ function update_item_stock($db, $item_id, $stock){
   );
 
   return execute_query($db, $sql, $params);
-
 }
 
 function destroy_item($db, $item_id){
@@ -168,7 +165,6 @@ function delete_item($db, $item_id){
   );
 
   return execute_query($db, $sql, $params);
-
 }
 
 

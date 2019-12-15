@@ -18,18 +18,12 @@ function get_histories($db, $user_id){
       WHERE
         purchase_histories.user_id = :user_id
     ";
+    
     $params = array(
       ':user_id' => $user_id
     );
   }
-
-  $sql .= "
-    GROUP BY
-      purchase_histories.history_id
-    ORDER BY
-      created
-    DESC
-  ";
   
   return fetch_all_query($db, $sql, $params);
+
 }

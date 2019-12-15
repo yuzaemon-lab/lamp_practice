@@ -18,9 +18,8 @@ function get_user($db, $user_id){
   $params = array(
     ':user_id' => $user_id
   );
- 
-  return fetch_query($db, $sql, $params);
 
+  return fetch_query($db, $sql, $params);
 }
 
 function get_user_by_name($db, $name){
@@ -41,7 +40,6 @@ function get_user_by_name($db, $name){
   );
 
   return fetch_query($db, $sql, $params);
-
 }
 
 function login_as($db, $name, $password){
@@ -63,7 +61,6 @@ function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
-  
   return insert_user($db, $name, $password);
 }
 
@@ -119,8 +116,6 @@ function insert_user($db, $name, $password){
     ':name' => $name, 
     ':password' => $password
   );
-
-  return execute_query($db, $sql, $params);
   
+  return execute_query($db, $sql, $params);
 }
-
