@@ -13,7 +13,7 @@ if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
 
-$history_id = get_get('history_id');
+$history_id = get_post('history_id');
 // 正規表現で、数字でない場合と0の場合は履歴一覧へリダイレクト
 if(is_positive_integer($history_id) === false ||
   $history_id === '0'){

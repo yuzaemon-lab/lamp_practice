@@ -19,4 +19,7 @@ $user = get_login_user($db);
 $histories = get_histories($db, $user['user_id']);
 $histories = entity_assoc_array($histories);
 
+$history_total_price = sum_price($histories);
+$history_total_price = entity_str($history_total_price);
+
 include_once '../view/history_view.php';

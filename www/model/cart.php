@@ -142,7 +142,7 @@ function purchase_carts($db, $carts){
       $history_id, 
       $cart['item_id'], 
       $cart['amount'], 
-      $cart['purchased_price']
+      $cart['price']
       ) === false){
       set_error($cart['name'] . 'の購入に失敗しました。');
       $db->rollback();

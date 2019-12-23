@@ -10,7 +10,7 @@
   <h1>購入履歴</h1>
   <div class="container">
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
-    <?php if(count($histories) > 0){ ?>
+    <?php if(isset($histories) !== false){ ?>
       <table class="table table-bordered">
         <thead class="thead-light">
           <tr>
@@ -25,9 +25,9 @@
           <tr>
             <td><?php print entity_str($history['history_id']); ?></td>
             <td><?php print entity_str($history['created']); ?></td>
-            <td><?php print entity_str(number_format($history['sum'])); ?>円</td>
+            <td><?php print entity_str(number_format($history_total_price)); ?>円</td>
             <td>
-              <form method="get" action="<?php print entity_str(HISTORY_DETAILS_URL); ?>">
+              <form method="post" action="<?php print entity_str(HISTORY_DETAILS_URL); ?>">
                 <input type="submit" value="購入明細表示" class="btn btn-secondary">
                 <input type="hidden" name="history_id" value="<?php print entity_str($history['history_id']); ?>">
               </form>
