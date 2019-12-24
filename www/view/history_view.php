@@ -25,7 +25,7 @@
           <tr>
             <td><?php print entity_str($history['history_id']); ?></td>
             <td><?php print entity_str($history['created']); ?></td>
-            <td><?php print entity_str(number_format($history_total_price)); ?>円</td>
+            <td><?php print entity_str(number_format($history['total_price'])); ?>円</td>
             <td>
               <form method="post" action="<?php print entity_str(HISTORY_DETAILS_URL); ?>">
                 <input type="submit" value="購入明細表示" class="btn btn-secondary">

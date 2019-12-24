@@ -24,7 +24,7 @@ if(is_positive_integer($history_id) === false ||
 $db = get_db_connect();
 $user = get_login_user($db);
 
-$history = get_history($db, $history_id, $user['user_id']);
+$history = get_history($db, $history_id);
 // 存在しないhistory_idでデータが取得された場合リダイレクト
 if($history === false){
   set_error('指定された履歴は存在しません。');
@@ -34,4 +34,4 @@ if($history === false){
 $history_details = get_history_details($db, $history_id);
 $history_details = entity_assoc_array($history_details);
 
-include_once '../view/history_detail_view.php';
+include_once '../view/history_details_view.php';

@@ -32,7 +32,11 @@
 			<?php } ?>
 		</tbody>
 		</table>
-		<p class="text-right">合計金額<?php print entity_str(number_format($history['sum'])); ?>円</p>
-  </div>
+		<p class="text-right">合計金額<?php print entity_str(number_format($history['history_sum'])); ?>円</p>
+		<form method="post" action="<?php print entity_str(HISTORY_URL); ?>" class="text-right">
+			<input type="submit" value="購入履歴表示" class="btn btn-secondary">
+			<input type="hidden" name="history_id" value="<?php print entity_str($history['history_id']); ?>">
+		</form>
+	</div>
 </body>
 </html>

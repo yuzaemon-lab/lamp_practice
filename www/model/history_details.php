@@ -1,9 +1,9 @@
 <?php
-function get_history($db, $history_id, $user_id){
+function get_history($db, $history_id){
 	$sql = "
 	SELECT
 		purchase_histories.history_id,
-		purchase_histories.user_id,
+    sum(purchase_details.amount * purchase_details.purchased_price) as history_sum,
 		purchase_histories.created
 	FROM
 		purchase_histories
@@ -13,22 +13,13 @@ function get_history($db, $history_id, $user_id){
 		purchase_histories.history_id = purchase_details.history_id
 	WHERE
     purchase_histories.history_id = :history_id
+  GROUP BY
+    purchase_details.history_id
   ";
   
   $params = array(
     ':history_id' => $history_id
   );
-
-  if($user_id !== USER_TYPE_ADMIN){
-    $sql .= "
-    AND
-      purchase_histories.user_id = :user_id
-    ";
-    
-    $params = array(
-      ':user_id' => $user_id
-    );
-  }
   
 	return fetch_query($db, $sql, $params);
 }
