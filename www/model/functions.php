@@ -1,19 +1,9 @@
 <?php
 
-/**
-* 特殊文字をHTMLエンティティに変換する
-* @param str  $str 変換前文字
-* @return str 変換後文字
-*/
 function entity_str($str) {
-  return htmlspecialchars($str, ENT_QUOTES);
+  return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
-/**
-* 特殊文字をHTMLエンティティに変換する(2次元配列の値)
-* @param array  $assoc_array 変換前配列
-* @return array 変換後配列
-*/
 function entity_assoc_array($assoc_array) {
   foreach ($assoc_array as $key => $value) {
       foreach ($value as $keys => $values) {
@@ -126,8 +116,6 @@ function delete_image($filename){
   
 }
 
-
-
 function is_valid_length($string, $minimum_length, $maximum_length = PHP_INT_MAX){
   $length = mb_strlen($string);
   return ($minimum_length <= $length) && ($length <= $maximum_length);
@@ -145,7 +133,6 @@ function is_valid_format($string, $format){
   return preg_match($format, $string) === 1;
 }
 
-
 function is_valid_upload_image($image){
   if(is_uploaded_file($image['tmp_name']) === false){
     set_error('ファイル形式が不正です。');
@@ -158,4 +145,3 @@ function is_valid_upload_image($image){
   }
   return true;
 }
-

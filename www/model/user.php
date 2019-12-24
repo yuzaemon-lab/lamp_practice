@@ -12,10 +12,14 @@ function get_user($db, $user_id){
     FROM
       users
     WHERE
-      user_id = {$user_id}
+      user_id = :user_id
   ";
 
-  return fetch_query($db, $sql);
+  $params = array(
+    ':user_id' => $user_id
+  );
+
+  return fetch_query($db, $sql, $params);
 }
 
 function get_user_by_name($db, $name){
@@ -28,10 +32,14 @@ function get_user_by_name($db, $name){
     FROM
       users
     WHERE
-      name = '{$name}'
+      name = :name
   ";
 
-  return fetch_query($db, $sql);
+  $params = array(
+    ':name' => $name
+  );
+
+  return fetch_query($db, $sql, $params);
 }
 
 function login_as($db, $name, $password){
@@ -53,7 +61,6 @@ function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
-  
   return insert_user($db, $name, $password);
 }
 
@@ -102,12 +109,13 @@ function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
       users(name, password)
-    VALUES (?, ?);
+    VALUES (:name, :password);
   ";
-  $binds = [
-    [$name, 'str'],
-    [$password, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+  
+  $params = array(
+    ':name' => $name, 
+    ':password' => $password
+  );
+  
+  return execute_query($db, $sql, $params);
 }
-

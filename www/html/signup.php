@@ -9,6 +9,3 @@ if(is_logined() === true){
 }
 
 include_once '../view/signup_view.php';
-
-
-
