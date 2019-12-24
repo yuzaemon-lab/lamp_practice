@@ -1,5 +1,5 @@
 <?php
-function get_histories($db, $user_type){
+function get_histories($db, $user_type, $user_id){
   $sql = "
     SELECT
       purchase_histories.history_id,
@@ -17,11 +17,11 @@ function get_histories($db, $user_type){
   if($user_type !== USER_TYPE_ADMIN){
     $sql .= "
       WHERE
-        purchase_histories.user_type = :user_type
+        purchase_histories.user_id = :user_id
     ";
     
     $params = array(
-      ':user_type' => $user_type
+      ':user_id' => $user_id
     );
   }
 
