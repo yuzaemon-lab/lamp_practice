@@ -56,19 +56,19 @@ function get_ranking_items($db){
       price,
       image,
       status,
-      SUM(amount)
+      SUM(purchase_details.amount)
     FROM
       items
     JOIN
-      history_details
+      purchase_details
     ON
-      items.item_id = history_details.item_id
+      items.item_id = purchase_details.item_id
     WHERE
       status = 1
     GROUP BY
       items.item_id
     ORDER BY 
-      SUM(amount)
+      SUM(purchase_details.amount)
       DESC
     LIMIT 3
   ';
