@@ -16,4 +16,7 @@ $user = get_login_user($db);
 $items = get_open_items($db);
 $items = entity_assoc_array($items);
 
+$rankings = get_ranking_items($db);
+$rankings = entity_assoc_array($items);
+
 include_once '../view/index_view.php';

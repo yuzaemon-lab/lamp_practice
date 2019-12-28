@@ -47,6 +47,35 @@ function get_items($db, $is_open = false){
   return fetch_all_query($db, $sql);
 }
 
+function get_ranking_items($db){
+  $sql = '
+    SELECT
+      items.item_id,
+      name,
+      stock,
+      price,
+      image,
+      status,
+      SUM(amount)
+    FROM
+      items
+    JOIN
+      history_details
+    ON
+      items.item_id = history_details.item_id
+    WHERE
+      status = 1
+    GROUP BY
+      items.item_id
+    ORDER BY 
+      SUM(amount)
+      DESC
+    LIMIT 3
+  ';
+
+  return fetch_all_query($db, $sql);
+}
+
 function get_all_items($db){
   return get_items($db);
 }
