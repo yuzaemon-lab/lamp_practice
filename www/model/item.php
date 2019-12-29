@@ -51,11 +51,11 @@ function get_ranking_items($db){
   $sql = '
     SELECT
       items.item_id,
-      name,
-      stock,
-      price,
-      image,
-      status,
+      items.name,
+      items.stock,
+      items.price,
+      items.image,
+      items.status,
       SUM(purchase_details.amount)
     FROM
       items
@@ -66,7 +66,7 @@ function get_ranking_items($db){
     WHERE
       status = 1
     GROUP BY
-      items.item_id
+      purchase_details.item_id
     ORDER BY 
       SUM(purchase_details.amount)
       DESC
