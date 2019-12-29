@@ -16,10 +16,14 @@ function get_item($db, $item_id){
     FROM
       items
     WHERE
-      item_id = {$item_id}
+      item_id = :item_id
   ";
 
-  return fetch_query($db, $sql);
+  $params = array(
+    ':item_id' => $item_id
+  );
+
+  return fetch_query($db, $sql, $params);
 }
 
 function get_items($db, $is_open = false){
@@ -39,6 +43,36 @@ function get_items($db, $is_open = false){
       WHERE status = 1
     ';
   }
+
+  return fetch_all_query($db, $sql);
+}
+
+function get_ranking_items($db){
+  $sql = '
+    SELECT
+      items.item_id,
+      items.name,
+      items.stock,
+      items.price,
+      items.image,
+      items.status,
+      SUM(purchase_details.amount)
+    FROM
+      items
+    JOIN
+      purchase_details
+    ON
+      items.item_id = purchase_details.item_id
+    WHERE
+      status = 1
+    GROUP BY
+      purchase_details.item_id
+    ORDER BY 
+      SUM(purchase_details.amount)
+      DESC
+    LIMIT 3
+  ';
+
   return fetch_all_query($db, $sql);
 }
 
@@ -81,16 +115,18 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
         image,
         status
       )
-    VALUES(?, ?, ?, ?, ?);
+    VALUES(:name, :price, :stock, :filename, :status_value);
   ";
-  $binds = [
-    [$name, 'str'],
-    [$price, 'int'],
-    [$stock, 'int'],
-    [$filename, 'str'],
-    [$status_value, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+  
+  $params = array(
+    ':name' => $name,
+    ':price' => $price,
+    ':stock' => $stock,
+    ':filename' => $filename,
+    ':status_value' => $status_value,
+  );
+
+  return execute_query($db, $sql, $params);
 }
 
 function update_item_status($db, $item_id, $status){
@@ -99,15 +135,17 @@ function update_item_status($db, $item_id, $status){
     UPDATE
       items
     SET
-      status = ?
+      status = :status
     WHERE
-      item_id = ?
+      item_id = :item_id
   ";
-  $binds = [
-    [$status_value, 'int'],
-    [$item_id, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+
+  $params = array(
+    ':status' => $status_value,
+    ':item_id' => $item_id
+  );
+
+  return execute_query($db, $sql, $params);
 }
 
 function update_item_stock($db, $item_id, $stock){
@@ -115,15 +153,17 @@ function update_item_stock($db, $item_id, $stock){
     UPDATE
       items
     SET
-      stock = ?
+      stock = :stock
     WHERE
-      item_id = ?
+      item_id = :item_id
   ";
-  $binds = [
-    [$stock, 'int'],
-    [$item_id, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+  
+  $params = array(
+    ':stock' => $stock,
+    ':item_id' => $item_id
+  );
+
+  return execute_query($db, $sql, $params);
 }
 
 function destroy_item($db, $item_id){
@@ -146,12 +186,14 @@ function delete_item($db, $item_id){
     DELETE FROM
       items
     WHERE
-      item_id = ?
+      item_id = :item_id
   ";
-  $binds = [
-    [$item_id, 'int'],
-  ];
-  return execute_query($db, $sql, $binds);
+  
+  $params = array(
+    ':item_id' => $item_id
+  );
+
+  return execute_query($db, $sql, $params);
 }
 
 

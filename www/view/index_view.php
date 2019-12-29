@@ -11,8 +11,8 @@
   
 
   <div class="container">
-    <h1>商品一覧</h1>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
+    <h1>商品一覧</h1>
 
     <div class="card-deck">
       <div class="row">
@@ -39,6 +39,36 @@
           </div>
         </div>
       <?php } ?>
+      </div>
+    </div>
+    
+    <h1>売れ筋ランキング</h1>
+    <div class="card-deck">
+      <div class="row">
+        <?php foreach($rankings as $rank){ ?>
+          <div class="col-6 item">
+            <div class="card h-100 text-center">
+              <div class="card-header">
+                <?php print(entity_str($rank['name'])); ?>
+              </div>
+              <figure class="card-body">
+                <img class="card-img" src="<?php print(entity_str(IMAGE_PATH . $rank['image'])); ?>">
+                <figcaption>
+                  <?php print(entity_str(number_format($rank['price']))); ?>円
+                  <?php if($rank['stock'] > 0){ ?>
+                    <form action="index_add_cart.php" method="post">
+                      <input type="submit" value="カートに追加" class="btn btn-primary btn-block">
+                      <input type="hidden" name="item_id" value="<?php print(entity_str($rank['item_id'])); ?>">
+                      <input type="hidden" name="token" value="<?php print(entity_str($token)); ?>">
+                    </form>
+                  <?php } else { ?>
+                    <p class="text-danger">現在売り切れです。</p>
+                  <?php } ?>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        <?php } ?>
       </div>
     </div>
   </div>
